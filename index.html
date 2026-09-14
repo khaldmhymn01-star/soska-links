@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sosca - Bio Links</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        :root {
+            --p-pink: #ff77bc;
+            --n-pink: #ff2a8d;
+            --d-purple: #180313;
+            --d-bg: #080106;
+            --t-white: #ffffff;
+            --g-bg: rgba(255, 150, 205, 0.12);
+            --g-border: rgba(255, 192, 227, 0.45);
+        }
+        body {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: var(--d-bg);
+            font-family: 'Poppins', sans-serif;
+            color: var(--t-white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 50% 15%, rgba(255, 42, 141, 0.35) 0%, transparent 65%),
+                radial-gradient(circle at 15% 75%, rgba(154, 42, 255, 0.25) 0%, transparent 55%),
+                linear-gradient(180deg, var(--d-purple) 0%, var(--d-bg) 100%);
+        }
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .avatar-box {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin-bottom: 20px;
+        }
+        .avatar-glow {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            padding: 6px;
+            background: linear-gradient(135deg, #ffa3db, var(--n-pink), #9a2aff);
+            box-shadow: 0 0 30px var(--n-pink);
+            animation: pulse 3s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 25px var(--n-pink); }
+            100% { transform: scale(1.03); box-shadow: 0 0 40px var(--n-pink); }
+        }
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.85);
+            background: #11020d;
+        }
+        .avatar-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+        }
+        .bow {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            font-size: 36px;
+            color: #ffb3e1;
+            filter: drop-shadow(0 0 8px var(--n-pink));
+            z-index: 12;
+            transform: rotate(15deg);
+        }
+        .heart {
+            position: absolute;
+            color: #ff91d0;
+            filter: drop-shadow(0 0 8px var(--n-pink));
+            z-index: 12;
+            animation: float 3s infinite ease-in-out;
+        }
+        .h1 { top: 20%; left: -20px; font-size: 18px; }
+        .h2 { bottom: 15%; left: -10px; font-size: 15px; }
+        .h3 { top: 40%; right: -22px; font-size: 20px; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .brand {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .brand-bow {
+            font-size: 24px;
+            color: #ffa1dd;
+            filter: drop-shadow(0 0 8px var(--n-pink));
+            margin-bottom: -10px;
+            display: inline-block;
+        }
+        .brand-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 72px;
+            color: #ffffff;
+            text-shadow: 0 0 15px var(--p-pink), 0 0 30px var(--n-pink);
+            line-height: 1.1;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            margin: 10px 0 25px 0;
+        }
+        .div-line {
+            height: 1.5px;
+            flex-grow: 1;
+            background: linear-gradient(90deg, transparent, var(--p-pink), transparent);
+        }
+        .div-heart {
+            color: #ff9ee2;
+            font-size: 12px;
+        }
+        .links {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .btn {
+            position: relative;
+            width: 100%;
+            height: 64px;
+            background: var(--g-bg);
+            border: 1.5px solid var(--g-border);
+            border-radius: 35px;
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            text-decoration: none;
+            color: var(--t-white);
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            border-color: #ffffff;
+            box-shadow: 0 0 20px var(--n-pink);
+        }
+        .btn-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .ig .btn-icon { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
+        .tk .btn-icon { background: linear-gradient(135deg, #00f2fe, #fe2c55); }
+        .dc .btn-icon { background: linear-gradient(135deg, #5865f2, #2c2f33); }
+        .tw .btn-icon { background: linear-gradient(135deg, #a970ff, #4b10a8); }
+        .btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .btn-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .btn-sub {
+            font-size: 8px;
+            color: #ffb3e1;
+            margin-top: 2px;
+        }
+        .btn-arrow {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        footer {
+            margin-top: 30px;
+        }
+        .footer-bow {
+            font-size: 26px;
+            color: #ff94d5;
+            filter: drop-shadow(0 0 10px var(--n-pink));
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-layer">
+        <canvas id="canvas"></canvas>
+    </div>
+    <div class="container">
+        <div class="avatar-box">
+            <div class="avatar-glow">
+                <div class="avatar-img">
+                    <!-- الصورة مضمنة كـ SVG Data Matrix مموهة وخلفية حية بنفس ملامح أدا وونغ -->
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'><rect width='100%' height='100%' fill='%2311020d'/><circle cx='250' cy='250' r='230' fill='%234a0521'/><circle cx='250' cy='220' r='120' fill='%23f1c27d'/><path d='M130 180 Q 250 80 370 180 Q 380 280 370 300 Q 250 200 130 300 Z' fill='%23111116'/><path d='M 170 320 Q 250 450 330 320 Q 250 360 170 320' fill='%23800a1d'/></svg>" id="profileImg" alt="Sosca Avatar">
+                </div>
+            </div>
+            <i class="fa-solid fa-ribbon bow"></i>
+            <i class="fa-solid fa-heart heart h1"></i>
+            <i class="fa-solid fa-heart heart h2"></i>
+            <i class="fa-solid fa-heart heart h3"></i>
+        </div>
+        <div class="brand">
+            <i class="fa-solid fa-ribbon brand-bow"></i>
+            <h1 class="brand-title">Sösca</h1>
+        </div>
+        <div class="divider">
+            <div class="div-line"></div>
+            <i class="fa-solid fa-heart div-heart"></i>
+            <div class="div-line"></div>
+        </div>
+        <div class="links">
+            <a href="https://instagram.com" target="_blank" class="btn ig">
+                <div class="btn-icon"><i class="fa-brands fa-instagram"></i></div>
+                <div class="btn-text"><span class="btn-title">Instagram</span><i class="fa-solid fa-heart btn-sub"></i></div>
+                <div class="btn-arrow"><i class="fa-solid fa-chevron-left"></i></div>
+            </a>
+            <a href="https://www.tiktok.com/@s0scatt" target="_blank" class="btn tk">
+                <div class="btn-icon"><i class="fa-brands fa-tiktok"></i></div>
+                <div class="btn-text"><span class="btn-title">TikTok</span><i class="fa-solid fa-heart btn-sub"></i></div>
+                <div class="btn-arrow"><i class="fa-solid fa-chevron-left"></i></div>
+            </a>
+            <a href="https://discord.gg/hig" target="_blank" class="btn dc">
+                <div class="btn-icon"><i class="fa-brands fa-discord"></i></div>
+                <div class="btn-text"><span class="btn-title">Discord</span><i class="fa-solid fa-heart btn-sub"></i></div>
+                <div class="btn-arrow"><i class="fa-solid fa-chevron-left"></i></div>
+            </a>
+            <a href="https://www.twitch.tv/s0sca" target="_blank" class="btn tw">
+                <div class="btn-icon"><i class="fa-brands fa-twitch"></i></div>
+                <div class="btn-text"><span class="btn-title">Twitch</span><i class="fa-solid fa-heart btn-sub"></i></div>
+                <div class="btn-arrow"><i class="fa-solid fa-chevron-left"></i></div>
+            </a>
+        </div>
+        <footer>
+            <i class="fa-solid fa-ribbon footer-bow"></i>
+        </footer>
+    </div>
+    <script>
+        // إدراج الصورة الخاصة بك بدقة عالية مباشرة عبر الجافاسكربت
+        document.getElementById('profileImg').src = "https://i.postimg.cc/9F3z1y3N/1000086518.jpg";
+
+        const cvs = document.getElementById('canvas');
+        const ctx = cvs.getContext('2d');
+        let w = cvs.width = window.innerWidth;
+        let h = cvs.height = window.innerHeight;
+        window.addEventListener('resize', () => {
+            w = cvs.width = window.innerWidth;
+            h = cvs.height = window.innerHeight;
+        });
+        function Pt() { this.reset(); }
+        Pt.prototype.reset = function() {
+            this.x = Math.random() * w;
+            this.y = Math.random() * h;
+            this.s = Math.random() * 2 + 1;
+            this.sy = -(Math.random() * 0.5 + 0.2);
+            this.op = Math.random();
+        };
+        Pt.prototype.draw = function() {
+            this.y += this.sy;
+            if (this.y < 0) this.reset();
+            ctx.fillStyle = '#ff77bc';
+            ctx.globalAlpha = this.op;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.s, 0, Math.PI * 2);
+            ctx.fill();
+        };
+        const pts = Array.from({ length: 45 }, () => new Pt());
+        function anim() {
+            ctx.clearRect(0, 0, w, h);
+            pts.forEach(p => p.draw());
+            requestAnimationFrame(anim);
+        }
+        anim();
+    </script>
+</body>
+</html>
